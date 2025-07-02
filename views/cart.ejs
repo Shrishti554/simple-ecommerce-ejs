@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <%- include('partials/header', { user }) %>
+  <h1>Your Cart</h1>
+  <% if (cart.length === 0) { %>
+    <p>Your cart is empty.</p>
+  <% } else { %>
+    <form method="POST" action="/update-cart">
+      <table>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+        <% cart.forEach((item, idx) => { %>
+          <tr>
+            <td><%= item.product.name %></td>
+            <td>
+              <input type="number" name="quantities" value="<%= item.quantity %>" min="0">
+              <input type="hidden" name="productIds" value="<%= item.product.id %>">
+            </td>
+            <td>$<%= item.product.price * item.quantity %></td>
+          </tr>
+        <% }) %>
+      </table>
+      <button type="submit">Update Cart</button>
+    </form>
+    <p>Total: $<%= total %></p>
+    <a href="/checkout">Proceed to Checkout</a>
+  <% } %>
+</body>
+</html>

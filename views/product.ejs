@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= product.name %> - Simple E-Commerce</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <%- include('partials/header', { user }) %>
+  <div class="product-detail">
+    <img src="<%= product.image %>" alt="<%= product.name %>" width="200">
+    <h1><%= product.name %></h1>
+    <p><%= product.description %></p>
+    <p>Price: $<%= product.price %></p>
+    <form method="POST" action="/add-to-cart">
+      <input type="hidden" name="productId" value="<%= product.id %>">
+      <label>Quantity: <input type="number" name="quantity" value="1" min="1"></label>
+      <button type="submit">Add to Cart</button>
+    </form>
+  </div>
+</body>
+</html>

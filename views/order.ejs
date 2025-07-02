@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Orders - Simple E-Commerce</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <%- include('partials/header', { user }) %>
+  <h1>My Orders</h1>
+  <% if (orders.length === 0) { %>
+    <p>No orders yet.</p>
+  <% } else { %>
+    <% orders.forEach(order => { %>
+      <div class="order">
+        <p><strong>Order ID:</strong> <%= order.id %> | <strong>Date:</strong> <%= order.date.toLocaleString() %></p>
+        <ul>
+          <% order.items.forEach(item => { %>
+            <li><%= item.product.name %> x <%= item.quantity %></li>
+          <% }) %>
+        </ul>
+        <p><strong>Total:</strong> $<%= order.total %></p>
+        <p><strong>Address:</strong> <%= order.address %></p>
+      </div>
+    <% }) %>
+  <% } %>
+</body>
+</html>

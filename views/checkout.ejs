@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Checkout - Simple E-Commerce</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <!-- Include Stripe.js if you want payment integration -->
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+  <%- include('partials/header', { user }) %>
+
+  <h1>Checkout</h1>
+
+  <% if (cart.length === 0) { %>
+    <p>Your cart is empty. <a href="/">Go shopping</a></p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr><th>Product</th><th>Quantity</th><th>Price</th></tr>
+      </thead>
+      <tbody>
+        <% cart.forEach(item => { %>
+          <tr>
+            <td><%= item.product.name %></td>
+            <td><%= item.quantity %></td>
+            <td>$<%= (item.product.price * item.quantity).toFixed(2) %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <p><strong>Total: $<%= total.toFixed(2) %></strong></p>
+
+    <form id="checkout-form" method="POST" action="/checkout">
+      <label for="address">Shipping Address:</label><br>
+      <input type="text" id="address" name="address" required style="width: 300px; padding: 8px;"><br><br>
+
+      <!-- Optional Stripe Elements container -->
+      <div id="card-element"><!-- Stripe Card Element will mount here --></div>
+      <div id="card-errors" role="alert" style="color:red; margin-top:10px;"></div>
+
+      <button type="submit" style="margin-top: 15px; padding: 10px 20px; background: #f0a500; border:none; color: white; font-weight: bold; cursor: pointer;">Place Order</button>
+    </form>
+  <% } %>
+
+  <script>
+    // Optional: Stripe Elements integration example (if you want to accept card payments)
+    /*
+    const stripe = Stripe('YOUR_PUBLISHABLE_KEY');
+    const elements = stripe.elements();
+    const card = elements.create('card');
+    card.mount('#card-element');
+
+    const form = document.getElementById('checkout-form');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const { paymentMethod, error } = await stripe.createPaymentMethod('card', card);
+      if (error) {
+        document.getElementById('card-errors').textContent = error.message;
+      } else {
+        // Append paymentMethod.id to form and submit
+        const hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'paymentMethodId');
+        hiddenInput.setAttribute('value', paymentMethod.id);
+        form.appendChild(hiddenInput);
+        form.submit();
+      }
+    });
+    */
+  </script>
+</body>
+</html>
